@@ -11,10 +11,11 @@
   "exports": {
     ".": {
       "import": "./dist/index.mjs",
-      "require": "./dist/index.cjs",
+      "require": "./dist/index.js",
       "types": "./dist/index.d.ts"
     },
-    "./styles.css": "./dist/styles.css"
+    "./styles.css": "./dist/styles.css",
+    "./dist/styles.css": "./dist/styles.css"
   },
   "files": [
     "dist"

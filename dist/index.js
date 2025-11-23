@@ -30,11 +30,7 @@ var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: tru
 // src/index.ts
 var index_exports = {};
 __export(index_exports, {
-  Modal: () => Modal,
-  ModalBody: () => ModalBody,
-  ModalFooter: () => ModalFooter,
-  ModalHeader: () => ModalHeader,
-  useModalClose: () => useModalClose
+  Modal: () => Modal
 });
 module.exports = __toCommonJS(index_exports);
 
@@ -45,13 +41,6 @@ var import_jsx_runtime = require("react/jsx-runtime");
 var modalStack = [];
 var nextZIndexBase = 50;
 var ModalContext = React.createContext(null);
-function useModal() {
-  const context = React.useContext(ModalContext);
-  if (!context) {
-    throw new Error("Modal.* components must be used inside <Modal>");
-  }
-  return context;
-}
 function cn(...classes) {
   return classes.filter(Boolean).join(" ");
 }
@@ -75,12 +64,6 @@ var variantContainerClasses = {
   danger: "border-red-500/60",
   success: "border-emerald-500/60",
   info: "border-sky-500/60"
-};
-var variantHeaderClasses = {
-  default: "",
-  danger: "bg-red-500/5 border-red-500/60",
-  success: "bg-emerald-500/5 border-emerald-500/60",
-  info: "bg-sky-500/5 border-sky-500/60"
 };
 function Modal({
   open,
@@ -207,53 +190,7 @@ function Modal({
   ) });
   return (0, import_react_dom.createPortal)(content, document.body);
 }
-function ModalHeader({
-  className,
-  children
-}) {
-  const { variant } = useModal();
-  return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
-    "div",
-    {
-      className: cn(
-        "border-b px-6 py-4 flex flex-col gap-1 border-slate-200 dark:border-slate-700",
-        variantHeaderClasses[variant],
-        className
-      ),
-      children
-    }
-  );
-}
-function ModalBody({
-  className,
-  children
-}) {
-  return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: cn("flex-1 overflow-auto px-6 py-4", className), children });
-}
-function ModalFooter({
-  className,
-  children
-}) {
-  return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
-    "div",
-    {
-      className: cn(
-        "border-t px-6 py-4 flex items-center justify-end gap-2 border-slate-200 dark:border-slate-700",
-        className
-      ),
-      children
-    }
-  );
-}
-function useModalClose() {
-  const { close } = useModal();
-  return close;
-}
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
-  Modal,
-  ModalBody,
-  ModalFooter,
-  ModalHeader,
-  useModalClose
+  Modal
 });

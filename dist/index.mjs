@@ -5,13 +5,6 @@ import { jsx, jsxs } from "react/jsx-runtime";
 var modalStack = [];
 var nextZIndexBase = 50;
 var ModalContext = React.createContext(null);
-function useModal() {
-  const context = React.useContext(ModalContext);
-  if (!context) {
-    throw new Error("Modal.* components must be used inside <Modal>");
-  }
-  return context;
-}
 function cn(...classes) {
   return classes.filter(Boolean).join(" ");
 }
@@ -35,12 +28,6 @@ var variantContainerClasses = {
   danger: "border-red-500/60",
   success: "border-emerald-500/60",
   info: "border-sky-500/60"
-};
-var variantHeaderClasses = {
-  default: "",
-  danger: "bg-red-500/5 border-red-500/60",
-  success: "bg-emerald-500/5 border-emerald-500/60",
-  info: "bg-sky-500/5 border-sky-500/60"
 };
 function Modal({
   open,
@@ -167,52 +154,6 @@ function Modal({
   ) });
   return createPortal(content, document.body);
 }
-function ModalHeader({
-  className,
-  children
-}) {
-  const { variant } = useModal();
-  return /* @__PURE__ */ jsx(
-    "div",
-    {
-      className: cn(
-        "border-b px-6 py-4 flex flex-col gap-1 border-slate-200 dark:border-slate-700",
-        variantHeaderClasses[variant],
-        className
-      ),
-      children
-    }
-  );
-}
-function ModalBody({
-  className,
-  children
-}) {
-  return /* @__PURE__ */ jsx("div", { className: cn("flex-1 overflow-auto px-6 py-4", className), children });
-}
-function ModalFooter({
-  className,
-  children
-}) {
-  return /* @__PURE__ */ jsx(
-    "div",
-    {
-      className: cn(
-        "border-t px-6 py-4 flex items-center justify-end gap-2 border-slate-200 dark:border-slate-700",
-        className
-      ),
-      children
-    }
-  );
-}
-function useModalClose() {
-  const { close } = useModal();
-  return close;
-}
 export {
-  Modal,
-  ModalBody,
-  ModalFooter,
-  ModalHeader,
-  useModalClose
+  Modal
 };
