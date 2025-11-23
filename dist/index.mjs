@@ -9,25 +9,25 @@ function cn(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 var sizeClasses = {
-  sm: "max-w-md",
-  md: "max-w-lg",
-  lg: "max-w-2xl",
-  xl: "max-w-4xl",
-  full: "max-w-[min(100vw-2rem,80rem)]"
+  sm: "am-modal-size-sm",
+  md: "am-modal-size-md",
+  lg: "am-modal-size-lg",
+  xl: "am-modal-size-xl",
+  full: "am-modal-size-full"
 };
 var animationClasses = {
-  scale: "animate-modal-scale-in",
-  "slide-up": "animate-modal-slide-up",
-  "slide-down": "animate-modal-slide-down",
-  "slide-left": "animate-modal-slide-left",
-  "slide-right": "animate-modal-slide-right",
+  scale: "am-anim-scale",
+  "slide-up": "am-anim-slide-up",
+  "slide-down": "am-anim-slide-down",
+  "slide-left": "am-anim-slide-left",
+  "slide-right": "am-anim-slide-right",
   none: ""
 };
 var variantContainerClasses = {
-  default: "",
-  danger: "border-red-500/60",
-  success: "border-emerald-500/60",
-  info: "border-sky-500/60"
+  default: "am-modal-variant-default",
+  danger: "am-modal-variant-danger",
+  success: "am-modal-variant-success",
+  info: "am-modal-variant-info"
 };
 function Modal({
   open,
@@ -111,23 +111,17 @@ function Modal({
   const content = /* @__PURE__ */ jsx(ModalContext.Provider, { value: { close, variant }, children: /* @__PURE__ */ jsxs(
     "div",
     {
-      className: "fixed inset-0 flex items-center justify-center px-4 py-6",
+      className: "am-modal-root",
       style: { zIndex },
       "aria-modal": "true",
       role: "dialog",
       children: [
-        /* @__PURE__ */ jsx(
-          "div",
-          {
-            className: "fixed inset-0 bg-black/45 backdrop-blur-[1px] animate-overlay-fade-in",
-            onClick: handleOverlayClick
-          }
-        ),
+        /* @__PURE__ */ jsx("div", { className: "am-modal-overlay", onClick: handleOverlayClick }),
         /* @__PURE__ */ jsxs(
           "div",
           {
             className: cn(
-              "relative z-10 w-full max-h-[85vh] overflow-hidden rounded-2xl border bg-white text-slate-900 shadow-2xl flex flex-col dark:bg-slate-900 dark:text-slate-50",
+              "am-modal-box",
               sizeClasses[size],
               animationClasses[animation],
               variantContainerClasses[variant],
@@ -140,7 +134,7 @@ function Modal({
                 "button",
                 {
                   type: "button",
-                  className: "absolute right-4 top-4 inline-flex h-8 w-8 items-center justify-center rounded-full border border-transparent bg-black/10 text-slate-800 hover:bg-black/20 dark:bg-white/10 dark:text-slate-100 dark:hover:bg-white/20",
+                  className: "am-modal-close-btn",
                   onClick: close,
                   "aria-label": "Close",
                   children: /* @__PURE__ */ jsx("span", { className: "text-lg leading-none", children: "\xD7" })
