@@ -1,3 +1,4 @@
+import * as react_jsx_runtime from 'react/jsx-runtime';
 import * as React from 'react';
 
 type ModalSize = "sm" | "md" | "lg" | "xl" | "full";
@@ -17,5 +18,18 @@ interface ModalProps {
     children: React.ReactNode;
 }
 declare function Modal({ open, onOpenChange, size, animation, showCloseIcon, className, disableOutsideClose, disableEscClose, children, variant, }: ModalProps): React.ReactPortal | null;
+declare function ModalHeader({ className, children, }: {
+    className?: string;
+    children: React.ReactNode;
+}): react_jsx_runtime.JSX.Element;
+declare function ModalBody({ className, children, }: {
+    className?: string;
+    children: React.ReactNode;
+}): react_jsx_runtime.JSX.Element;
+declare function ModalFooter({ className, children, }: {
+    className?: string;
+    children: React.ReactNode;
+}): react_jsx_runtime.JSX.Element;
+declare function useModalClose(): () => void;
 
-export { Modal, type ModalProps };
+export { Modal, type ModalAnimation, ModalBody, ModalFooter, ModalHeader, type ModalProps, type ModalSize, type ModalVariant, useModalClose };

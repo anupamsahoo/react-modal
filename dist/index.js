@@ -30,7 +30,11 @@ var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: tru
 // src/index.ts
 var index_exports = {};
 __export(index_exports, {
-  Modal: () => Modal
+  Modal: () => Modal,
+  ModalBody: () => ModalBody,
+  ModalFooter: () => ModalFooter,
+  ModalHeader: () => ModalHeader,
+  useModalClose: () => useModalClose
 });
 module.exports = __toCommonJS(index_exports);
 
@@ -41,6 +45,13 @@ var import_jsx_runtime = require("react/jsx-runtime");
 var modalStack = [];
 var nextZIndexBase = 50;
 var ModalContext = React.createContext(null);
+function useModal() {
+  const context = React.useContext(ModalContext);
+  if (!context) {
+    throw new Error("Modal.* components must be used inside <Modal>");
+  }
+  return context;
+}
 function cn(...classes) {
   return classes.filter(Boolean).join(" ");
 }
@@ -64,6 +75,12 @@ var variantContainerClasses = {
   danger: "am-modal-variant-danger",
   success: "am-modal-variant-success",
   info: "am-modal-variant-info"
+};
+var variantHeaderClasses = {
+  default: "am-modal-header-variant-default",
+  danger: "am-modal-header-variant-danger",
+  success: "am-modal-header-variant-success",
+  info: "am-modal-header-variant-info"
 };
 function Modal({
   open,
@@ -184,7 +201,44 @@ function Modal({
   ) });
   return (0, import_react_dom.createPortal)(content, document.body);
 }
+function ModalHeader({
+  className,
+  children
+}) {
+  const { variant } = useModal();
+  return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+    "div",
+    {
+      className: cn(
+        "am-modal-header",
+        variantHeaderClasses[variant],
+        className
+      ),
+      children
+    }
+  );
+}
+function ModalBody({
+  className,
+  children
+}) {
+  return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: cn("am-modal-body", className), children });
+}
+function ModalFooter({
+  className,
+  children
+}) {
+  return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: cn("am-modal-footer", className), children });
+}
+function useModalClose() {
+  const { close } = useModal();
+  return close;
+}
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
-  Modal
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
+  useModalClose
 });

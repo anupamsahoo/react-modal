@@ -5,6 +5,13 @@ import { jsx, jsxs } from "react/jsx-runtime";
 var modalStack = [];
 var nextZIndexBase = 50;
 var ModalContext = React.createContext(null);
+function useModal() {
+  const context = React.useContext(ModalContext);
+  if (!context) {
+    throw new Error("Modal.* components must be used inside <Modal>");
+  }
+  return context;
+}
 function cn(...classes) {
   return classes.filter(Boolean).join(" ");
 }
@@ -28,6 +35,12 @@ var variantContainerClasses = {
   danger: "am-modal-variant-danger",
   success: "am-modal-variant-success",
   info: "am-modal-variant-info"
+};
+var variantHeaderClasses = {
+  default: "am-modal-header-variant-default",
+  danger: "am-modal-header-variant-danger",
+  success: "am-modal-header-variant-success",
+  info: "am-modal-header-variant-info"
 };
 function Modal({
   open,
@@ -148,6 +161,43 @@ function Modal({
   ) });
   return createPortal(content, document.body);
 }
+function ModalHeader({
+  className,
+  children
+}) {
+  const { variant } = useModal();
+  return /* @__PURE__ */ jsx(
+    "div",
+    {
+      className: cn(
+        "am-modal-header",
+        variantHeaderClasses[variant],
+        className
+      ),
+      children
+    }
+  );
+}
+function ModalBody({
+  className,
+  children
+}) {
+  return /* @__PURE__ */ jsx("div", { className: cn("am-modal-body", className), children });
+}
+function ModalFooter({
+  className,
+  children
+}) {
+  return /* @__PURE__ */ jsx("div", { className: cn("am-modal-footer", className), children });
+}
+function useModalClose() {
+  const { close } = useModal();
+  return close;
+}
 export {
-  Modal
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
+  useModalClose
 };
