@@ -13,12 +13,13 @@ A clean, modern and fully reusable **React modal component** built for **Tailwin
 
 ## Installation
 
-````bash
+```bash
 npm install @anupamsahoo/react-modal
 # or
 yarn add @anupamsahoo/react-modal
 # or
 pnpm add @anupamsahoo/react-modal
+```
 
 ## Basic Usage
 
@@ -64,7 +65,7 @@ export default function Example() {
     </>
   );
 }
-````
+```
 
 ## Variants
 
