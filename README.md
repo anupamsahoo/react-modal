@@ -14,11 +14,11 @@ A clean, modern and fully reusable **React modal component** built for **Tailwin
 ## Installation
 
 ```bash
-npm install @anupamsahoo/react-stacked-modal
+npm install @anupamsahoo/react-modal
 # or
-yarn add @anupamsahoo/react-stacked-modal
+yarn add @anupamsahoo/react-modal
 # or
-pnpm add @anupamsahoo/react-stacked-modal
+pnpm add @anupamsahoo/react-modal
 ```
 
 ## Tailwind Setup (IMPORTANT)
@@ -31,7 +31,7 @@ In your main CSS file (for example: `src/index.css`, `app.css`):
 @import "tailwindcss";
 
 /* Required for react-modal animations */
-@import "@anupamsahoo/react-stacked-modal/styles.css";
+@import "@anupamsahoo/react-modal/styles.css";
 ```
 
 - No manual keyframes required
