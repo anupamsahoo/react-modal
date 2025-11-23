@@ -3,7 +3,6 @@
 
 import * as React from "react";
 import { createPortal } from "react-dom";
-import "./styles.css";
 
 /* -------------------- Global stack (for stacked modals) -------------------- */
 
@@ -13,6 +12,7 @@ let nextZIndexBase = 50;
 /* -------------------- Types -------------------- */
 
 export type ModalSize = "sm" | "md" | "lg" | "xl" | "full";
+
 export type ModalAnimation =
   | "scale"
   | "slide-up"
@@ -58,7 +58,7 @@ function cn(...classes: Array<string | false | null | undefined>): string {
   return classes.filter(Boolean).join(" ");
 }
 
-/* -------------------- Styles -------------------- */
+/* -------------------- Styles mapping -------------------- */
 
 const sizeClasses: Record<ModalSize, string> = {
   sm: "am-modal-size-sm",
@@ -108,7 +108,7 @@ export function Modal({
   const [mounted, setMounted] = React.useState(false);
   const [zIndex, setZIndex] = React.useState<number>(50);
 
-  // Unique id per modal instance
+  // Unique id per modal instance (created in effect, not during render)
   const idRef = React.useRef<string | null>(null);
 
   React.useEffect(() => {
@@ -143,6 +143,7 @@ export function Modal({
       }
 
       if (modalStack.length === 0) {
+        // reset base when all modals are closed (optional)
         nextZIndexBase = 50;
       }
     };

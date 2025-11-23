@@ -1,3 +1,5 @@
+/* src/styles.css */
+/* Tell Tailwind v4 to use its utilities here */
 @reference "tailwindcss";
 
 /* -------------------- Root & overlay -------------------- */

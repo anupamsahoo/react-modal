@@ -1,3 +1,15 @@
-export { Modal } from "./modal";
-export type { ModalProps } from "./modal";
-import "./styles.css";
+// src/index.ts
+export {
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
+  useModalClose,
+} from "./modal";
+
+export type {
+  ModalAnimation,
+  ModalProps,
+  ModalSize,
+  ModalVariant,
+} from "./modal";
