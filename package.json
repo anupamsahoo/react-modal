@@ -1,6 +1,6 @@
 {
   "name": "@anupamsahoo/react-modal",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "A stacked and themable React modal built for Tailwind CSS v4",
   "author": "Anupam Sahoo",
   "license": "MIT",
