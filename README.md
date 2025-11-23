@@ -13,30 +13,12 @@ A clean, modern and fully reusable **React modal component** built for **Tailwin
 
 ## Installation
 
-```bash
+````bash
 npm install @anupamsahoo/react-modal
 # or
 yarn add @anupamsahoo/react-modal
 # or
 pnpm add @anupamsahoo/react-modal
-```
-
-## Tailwind Setup (IMPORTANT)
-
-This package is built for Tailwind CSS v4 and ships its own animation styles.
-
-In your main CSS file (for example: `src/index.css`, `app.css`):
-
-```
-@import "tailwindcss";
-
-/* Required for react-modal animations */
-@import "@anupamsahoo/react-modal/styles.css";
-```
-
-- No manual keyframes required
-- No Tailwind config changes
-- Plug & play
 
 ## Basic Usage
 
@@ -48,6 +30,8 @@ import {
   ModalBody,
   ModalFooter,
 } from "@anupamsahoo/react-modal";
+
+import "@anupamsahoo/react-modal/styles.css";
 
 export default function Example() {
   const [open, setOpen] = React.useState(false);
@@ -80,7 +64,7 @@ export default function Example() {
     </>
   );
 }
-```
+````
 
 ## Variants
 
