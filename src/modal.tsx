@@ -1,0 +1,312 @@
+// src/modal.tsx
+"use client";
+
+import * as React from "react";
+import { createPortal } from "react-dom";
+
+/* -------------------- Global stack (for stacked modals) -------------------- */
+
+const modalStack: string[] = [];
+let nextZIndexBase = 50;
+
+/* -------------------- Types -------------------- */
+
+export type ModalSize = "sm" | "md" | "lg" | "xl" | "full";
+export type ModalAnimation =
+  | "scale"
+  | "slide-up"
+  | "slide-down"
+  | "slide-left"
+  | "slide-right"
+  | "none";
+
+export type ModalVariant = "default" | "danger" | "success" | "info";
+
+export interface ModalProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  size?: ModalSize;
+  animation?: ModalAnimation;
+  showCloseIcon?: boolean;
+  className?: string;
+  disableOutsideClose?: boolean;
+  disableEscClose?: boolean;
+  /** Theming: border + header styling */
+  variant?: ModalVariant;
+  children: React.ReactNode;
+}
+
+/* -------------------- Context -------------------- */
+
+const ModalContext = React.createContext<{
+  close: () => void;
+  variant: ModalVariant;
+} | null>(null);
+
+function useModal() {
+  const context = React.useContext(ModalContext);
+  if (!context) {
+    throw new Error("Modal.* components must be used inside <Modal>");
+  }
+  return context;
+}
+
+/* -------------------- Utility -------------------- */
+
+function cn(...classes: Array<string | false | null | undefined>): string {
+  return classes.filter(Boolean).join(" ");
+}
+
+/* -------------------- Styles -------------------- */
+
+const sizeClasses: Record<ModalSize, string> = {
+  sm: "max-w-md",
+  md: "max-w-lg",
+  lg: "max-w-2xl",
+  xl: "max-w-4xl",
+  full: "max-w-[min(100vw-2rem,80rem)]",
+};
+
+const animationClasses: Record<ModalAnimation, string> = {
+  scale: "animate-modal-scale-in",
+  "slide-up": "animate-modal-slide-up",
+  "slide-down": "animate-modal-slide-down",
+  "slide-left": "animate-modal-slide-left",
+  "slide-right": "animate-modal-slide-right",
+  none: "",
+};
+
+const variantContainerClasses: Record<ModalVariant, string> = {
+  default: "",
+  danger: "border-red-500/60",
+  success: "border-emerald-500/60",
+  info: "border-sky-500/60",
+};
+
+const variantHeaderClasses: Record<ModalVariant, string> = {
+  default: "",
+  danger: "bg-red-500/5 border-red-500/60",
+  success: "bg-emerald-500/5 border-emerald-500/60",
+  info: "bg-sky-500/5 border-sky-500/60",
+};
+
+/* -------------------- Main Modal -------------------- */
+
+export function Modal({
+  open,
+  onOpenChange,
+  size = "lg",
+  animation = "scale",
+  showCloseIcon = true,
+  className,
+  disableOutsideClose,
+  disableEscClose,
+  children,
+  variant = "default",
+}: ModalProps) {
+  const [mounted, setMounted] = React.useState(false);
+  const [zIndex, setZIndex] = React.useState<number>(50);
+
+  // Unique id per modal instance (created in effect, not during render)
+  const idRef = React.useRef<string | null>(null);
+
+  React.useEffect(() => {
+    if (!idRef.current) {
+      if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
+        idRef.current = `mdl-${crypto.randomUUID()}`;
+      } else {
+        idRef.current = `mdl-${Math.random().toString(36).slice(2, 9)}`;
+      }
+    }
+  }, []);
+
+  // Register/unregister in global stack for stacking support
+  React.useEffect(() => {
+    if (!open) return;
+
+    const id = idRef.current;
+    if (!id) return;
+
+    if (!modalStack.includes(id)) {
+      modalStack.push(id);
+
+      // Give this modal a unique z-index based on open order
+      setZIndex(nextZIndexBase);
+      nextZIndexBase += 2;
+    }
+
+    return () => {
+      const idx = modalStack.indexOf(id);
+      if (idx > -1) {
+        modalStack.splice(idx, 1);
+      }
+
+      if (modalStack.length === 0) {
+        // reset base when all modals are closed (optional)
+        nextZIndexBase = 50;
+      }
+    };
+  }, [open]);
+
+  React.useEffect(() => setMounted(true), []);
+
+  // Lock body scroll when any modal is open
+  React.useEffect(() => {
+    if (!open) return;
+
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = originalOverflow;
+    };
+  }, [open]);
+
+  const close = () => onOpenChange(false);
+
+  // ESC to close – only top modal reacts
+  React.useEffect(() => {
+    if (!open || disableEscClose) return;
+
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return;
+
+      const id = idRef.current;
+      if (!id) return;
+
+      const topId = modalStack[modalStack.length - 1];
+      const isTop = topId === id;
+
+      if (isTop) {
+        close();
+      }
+    };
+
+    window.addEventListener("keydown", handleEsc);
+    return () => window.removeEventListener("keydown", handleEsc);
+  }, [open, disableEscClose, onOpenChange]);
+
+  if (!mounted || !open) return null;
+
+  const handleOverlayClick = () => {
+    if (disableOutsideClose) return;
+
+    const id = idRef.current;
+    if (!id) return;
+
+    const topId = modalStack[modalStack.length - 1];
+    const isTop = topId === id;
+
+    if (isTop) {
+      close();
+    }
+  };
+
+  const content = (
+    <ModalContext.Provider value={{ close, variant }}>
+      <div
+        className="fixed inset-0 flex items-center justify-center px-4 py-6"
+        style={{ zIndex }}
+        aria-modal="true"
+        role="dialog"
+      >
+        {/* Overlay */}
+        <div
+          className="fixed inset-0 bg-black/45 backdrop-blur-[1px] animate-overlay-fade-in"
+          onClick={handleOverlayClick}
+        />
+
+        {/* Modal box */}
+        <div
+          className={cn(
+            "relative z-10 w-full max-h-[85vh] overflow-hidden rounded-2xl border bg-white text-slate-900 shadow-2xl flex flex-col dark:bg-slate-900 dark:text-slate-50",
+            sizeClasses[size],
+            animationClasses[animation],
+            variantContainerClasses[variant],
+            className
+          )}
+          onClick={(e) => e.stopPropagation()}
+        >
+          {children}
+
+          {/* Floating Close icon (optional) */}
+          {showCloseIcon && (
+            <button
+              type="button"
+              className="absolute right-4 top-4 inline-flex h-8 w-8 items-center justify-center rounded-full border border-transparent bg-black/10 text-slate-800 hover:bg-black/20 dark:bg-white/10 dark:text-slate-100 dark:hover:bg-white/20"
+              onClick={close}
+              aria-label="Close"
+            >
+              <span className="text-lg leading-none">&times;</span>
+            </button>
+          )}
+        </div>
+      </div>
+    </ModalContext.Provider>
+  );
+
+  return createPortal(content, document.body);
+}
+
+/* -------------------- Sub Components -------------------- */
+
+export function ModalHeader({
+  className,
+  children,
+}: {
+  className?: string;
+  children: React.ReactNode;
+}) {
+  const { variant } = useModal();
+
+  return (
+    <div
+      className={cn(
+        "border-b px-6 py-4 flex flex-col gap-1 border-slate-200 dark:border-slate-700",
+        variantHeaderClasses[variant],
+        className
+      )}
+    >
+      {children}
+    </div>
+  );
+}
+
+export function ModalBody({
+  className,
+  children,
+}: {
+  className?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className={cn("flex-1 overflow-auto px-6 py-4", className)}>
+      {children}
+    </div>
+  );
+}
+
+export function ModalFooter({
+  className,
+  children,
+}: {
+  className?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div
+      className={cn(
+        "border-t px-6 py-4 flex items-center justify-end gap-2 border-slate-200 dark:border-slate-700",
+        className
+      )}
+    >
+      {children}
+    </div>
+  );
+}
+
+/* Optional hook to close modal from anywhere inside */
+export function useModalClose() {
+  const { close } = useModal();
+  return close;
+}
