@@ -1,8 +1,8 @@
-// src/modal.tsx
 "use client";
 
 import * as React from "react";
 import { createPortal } from "react-dom";
+import "./modal.css";
 
 /* -------------------- Global stack (for stacked modals) -------------------- */
 
@@ -60,34 +60,34 @@ function cn(...classes: Array<string | false | null | undefined>): string {
 /* -------------------- Styles -------------------- */
 
 const sizeClasses: Record<ModalSize, string> = {
-  sm: "max-w-md",
-  md: "max-w-lg",
-  lg: "max-w-2xl",
-  xl: "max-w-4xl",
-  full: "max-w-[min(100vw-2rem,80rem)]",
+  sm: "am-modal-size-sm",
+  md: "am-modal-size-md",
+  lg: "am-modal-size-lg",
+  xl: "am-modal-size-xl",
+  full: "am-modal-size-full",
 };
 
 const animationClasses: Record<ModalAnimation, string> = {
-  scale: "animate-modal-scale-in",
-  "slide-up": "animate-modal-slide-up",
-  "slide-down": "animate-modal-slide-down",
-  "slide-left": "animate-modal-slide-left",
-  "slide-right": "animate-modal-slide-right",
+  scale: "am-anim-scale",
+  "slide-up": "am-anim-slide-up",
+  "slide-down": "am-anim-slide-down",
+  "slide-left": "am-anim-slide-left",
+  "slide-right": "am-anim-slide-right",
   none: "",
 };
 
 const variantContainerClasses: Record<ModalVariant, string> = {
-  default: "",
-  danger: "border-red-500/60",
-  success: "border-emerald-500/60",
-  info: "border-sky-500/60",
+  default: "am-modal-variant-default",
+  danger: "am-modal-variant-danger",
+  success: "am-modal-variant-success",
+  info: "am-modal-variant-info",
 };
 
 const variantHeaderClasses: Record<ModalVariant, string> = {
-  default: "",
-  danger: "bg-red-500/5 border-red-500/60",
-  success: "bg-emerald-500/5 border-emerald-500/60",
-  info: "bg-sky-500/5 border-sky-500/60",
+  default: "am-modal-header-variant-default",
+  danger: "am-modal-header-variant-danger",
+  success: "am-modal-header-variant-success",
+  info: "am-modal-header-variant-info",
 };
 
 /* -------------------- Main Modal -------------------- */
@@ -107,7 +107,7 @@ export function Modal({
   const [mounted, setMounted] = React.useState(false);
   const [zIndex, setZIndex] = React.useState<number>(50);
 
-  // Unique id per modal instance (created in effect, not during render)
+  // Unique id per modal instance
   const idRef = React.useRef<string | null>(null);
 
   React.useEffect(() => {
@@ -142,7 +142,6 @@ export function Modal({
       }
 
       if (modalStack.length === 0) {
-        // reset base when all modals are closed (optional)
         nextZIndexBase = 50;
       }
     };
@@ -205,21 +204,18 @@ export function Modal({
   const content = (
     <ModalContext.Provider value={{ close, variant }}>
       <div
-        className="fixed inset-0 flex items-center justify-center px-4 py-6"
+        className="am-modal-root"
         style={{ zIndex }}
         aria-modal="true"
         role="dialog"
       >
         {/* Overlay */}
-        <div
-          className="fixed inset-0 bg-black/45 backdrop-blur-[1px] animate-overlay-fade-in"
-          onClick={handleOverlayClick}
-        />
+        <div className="am-modal-overlay" onClick={handleOverlayClick} />
 
         {/* Modal box */}
         <div
           className={cn(
-            "relative z-10 w-full max-h-[85vh] overflow-hidden rounded-2xl border bg-white text-slate-900 shadow-2xl flex flex-col dark:bg-slate-900 dark:text-slate-50",
+            "am-modal-box",
             sizeClasses[size],
             animationClasses[animation],
             variantContainerClasses[variant],
@@ -233,7 +229,7 @@ export function Modal({
           {showCloseIcon && (
             <button
               type="button"
-              className="absolute right-4 top-4 inline-flex h-8 w-8 items-center justify-center rounded-full border border-transparent bg-black/10 text-slate-800 hover:bg-black/20 dark:bg-white/10 dark:text-slate-100 dark:hover:bg-white/20"
+              className="am-modal-close-btn"
               onClick={close}
               aria-label="Close"
             >
@@ -262,7 +258,7 @@ export function ModalHeader({
   return (
     <div
       className={cn(
-        "border-b px-6 py-4 flex flex-col gap-1 border-slate-200 dark:border-slate-700",
+        "am-modal-header",
         variantHeaderClasses[variant],
         className
       )}
@@ -279,11 +275,7 @@ export function ModalBody({
   className?: string;
   children: React.ReactNode;
 }) {
-  return (
-    <div className={cn("flex-1 overflow-auto px-6 py-4", className)}>
-      {children}
-    </div>
-  );
+  return <div className={cn("am-modal-body", className)}>{children}</div>;
 }
 
 export function ModalFooter({
@@ -293,16 +285,7 @@ export function ModalFooter({
   className?: string;
   children: React.ReactNode;
 }) {
-  return (
-    <div
-      className={cn(
-        "border-t px-6 py-4 flex items-center justify-end gap-2 border-slate-200 dark:border-slate-700",
-        className
-      )}
-    >
-      {children}
-    </div>
-  );
+  return <div className={cn("am-modal-footer", className)}>{children}</div>;
 }
 
 /* Optional hook to close modal from anywhere inside */
