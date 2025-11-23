@@ -11,6 +11,12 @@ A clean, modern and fully reusable **React modal component** built for **Tailwin
 
 ---
 
+---
+
+## [`Demo`](https://anupamsahoo.github.io/react-modal-demo/)
+
+---
+
 ## Installation
 
 ```bash
