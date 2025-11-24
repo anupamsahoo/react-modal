@@ -375,6 +375,18 @@ Key work done during internal versions:
   - Inertia
   - Vite
 
+## Contributing
+
+Everyone is welcome to contribute via Pull Requests.
+
+- `main` is a protected branch (no direct pushes)
+- Please use feature branches and open a PR
+
+1. Fork this repo _or_ use a new branch if you are a collaborator
+2. Create a feature branch
+3. Commit your changes
+4. Open a Pull Request into `main`
+
 ### License
 
 MIT — Free for personal and commercial use
