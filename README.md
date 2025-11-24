@@ -225,6 +225,93 @@ const [secondOpen, setSecondOpen] = React.useState(false);
 | `disableOutsideClose`| `boolean` | `false` | Prevent overlay close |
 | `disableEscClose` | `boolean` | `false` | Prevent ESC close |
 
+### Tailwind v4 Setup (RECOMMENDED)
+
+Your modal is framework agnostic and uses CSS variables for colors.
+Paste this in `globals.css/app.css` or any root css
+
+#### Light theme (Tailwind default)
+
+```css
+:root {
+  /* Base colors */
+  --background: #ffffff;
+  --foreground: #0f172a;
+  --card: #ffffff;
+  --card-foreground: #0f172a;
+  --border: #e2e8f0;
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+
+  /* Modal surface + text */
+  --am-modal-bg: #ffffff;
+  --am-modal-fg: #0f172a;
+  --am-modal-border: #e2e8f0;
+
+  /* Header + footer */
+  --am-modal-header-bg: transparent;
+  --am-modal-header-border: #e2e8f0;
+  --am-modal-footer-border: #e2e8f0;
+
+  /* Overlay (40% opacity and blur from component) */
+  --am-modal-overlay-bg: rgba(0, 0, 0, 0.4);
+
+  /* Semantic variants */
+  --am-modal-danger-border: #ef4444;
+  --am-modal-success-border: #22c55e;
+  --am-modal-info-border: #0ea5e9;
+
+  /* Close button */
+  --am-modal-close-bg: #f1f5f9;
+  --am-modal-close-bg-hover: #e2e8f0;
+  --am-modal-close-fg: #0f172a;
+
+  /* Radius sync */
+  --am-modal-radius: 1rem;
+}
+```
+
+#### Dark mode
+
+```css
+.dark {
+  /* Base colors */
+  --background: #020617;
+  --foreground: #f8fafc;
+  --card: #020617;
+  --card-foreground: #f8fafc;
+  --border: #334155;
+  --muted: #1e293b;
+  --muted-foreground: #94a3b8;
+
+  /* Modal surface + text */
+  --am-modal-bg: #020617;
+  --am-modal-fg: #f8fafc;
+  --am-modal-border: #334155;
+
+  /* Header + footer */
+  --am-modal-header-bg: transparent;
+  --am-modal-header-border: #334155;
+  --am-modal-footer-border: #334155;
+
+  /* Overlay (40% opacity + dark tone) */
+  --am-modal-overlay-bg: rgba(2, 6, 23, 0.4);
+
+  /* Semantic variants */
+  --am-modal-danger-border: #f43f5e;
+  --am-modal-success-border: #4ade80;
+  --am-modal-info-border: #38bdf8;
+
+  /* Close button */
+  --am-modal-close-bg: rgba(255, 255, 255, 0.08);
+  --am-modal-close-bg-hover: rgba(255, 255, 255, 0.15);
+  --am-modal-close-fg: #f8fafc;
+
+  /* Radius sync */
+  --am-modal-radius: 1rem;
+}
+```
+
 ### Requirements
 
 - React 18+
@@ -234,6 +321,59 @@ const [secondOpen, setSecondOpen] = React.useState(false);
   - Vite
   - Laravel + Inertia
   - Any React app
+
+## Version Updates / Changelog
+
+#### v1.0.0 → v1.0.19 — Internal development builds (not published to npm)
+
+Key work done during internal versions:
+
+- Built core React + Portal modal system
+- Added stacking system (top modal only closes)
+- Implemented ESC + overlay close handling
+- Added scroll lock for <body>
+- Created compound components: ModalHeader, ModalBody, ModalFooter
+- Added animations: scale, slide-up, slide-down, slide-left, slide-right, none
+- Added variants: default, danger, success, info
+- Implemented size system: sm | md | lg | xl | full
+- Introduced CSS variable theming (--am-modal-\*)
+- Removed hard Tailwind color dependency
+- Added light & dark mode support
+- Added overlay blur + opacity control
+- Added floating close button
+- Ensured React 18 / 19 compatibility
+- Built ESM + CJS with tsup
+- Exported dist/ + styles.css
+- Tested with Next.js, Inertia, Vite
+- Created demo & documentation
+
+### 1.0.20 — Official Public Release
+
+- Official public npm release
+- Fully framework-agnostic color system
+- Tailwind v4 compatible
+- Light & dark theme support
+- Overlay blur with 0.4 opacity
+- Modal sizes: sm | md | lg | xl | full
+- Animations:
+  - scale
+  - slide-up
+  - slide-down
+  - slide-left
+  - slide-right
+  - none
+- Variants:
+  - default
+  - danger
+  - success
+  - info
+- ESC + overlay handling for top modal only
+- Scroll lock on <body>
+- useModalClose() hook
+- Working with:
+  - Next.js
+  - Inertia
+  - Vite
 
 ### License
 

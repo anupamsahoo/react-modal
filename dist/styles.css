@@ -18,8 +18,11 @@
 .am-modal-box {
   @apply relative z-10 w-full max-h-[85vh] overflow-hidden rounded-2xl 
     border border-slate-300
-    bg-white text-slate-900 shadow-2xl flex flex-col
-    dark:bg-slate-900 dark:text-slate-50 dark:border-slate-700;
+    bg-white text-slate-900 shadow-2xl flex flex-col;
+}
+
+.dark .am-modal-box {
+  @apply bg-slate-900 text-slate-50 border-slate-700;
 }
 
 /* -------------------- Sizes -------------------- */
@@ -65,7 +68,11 @@
 /* -------------------- Header + variants -------------------- */
 
 .am-modal-header {
-  @apply border-b px-6 py-4 flex flex-col gap-1 border-slate-200 dark:border-slate-700;
+  @apply border-b px-6 py-4 flex flex-col gap-1 border-slate-200;
+}
+
+.dark .am-modal-header {
+  @apply border-slate-700;
 }
 
 .am-modal-header-variant-default {
@@ -92,7 +99,11 @@
 
 .am-modal-footer {
   @apply border-t px-6 py-4 flex items-center justify-end gap-2 
-    border-slate-200 dark:border-slate-700;
+    border-slate-200;
+}
+
+.dark .am-modal-footer {
+  @apply border-slate-700;
 }
 
 /* -------------------- Close button -------------------- */
@@ -100,8 +111,11 @@
 .am-modal-close-btn {
   @apply absolute right-4 top-4 inline-flex h-8 w-8 items-center justify-center 
     rounded-full border border-transparent bg-black/10 text-slate-800 
-    hover:bg-black/20 
-    dark:bg-white/10 dark:text-slate-100 dark:hover:bg-white/20;
+    hover:bg-black/20;
+}
+
+.dark .am-modal-close-btn {
+  @apply bg-white/10 text-slate-100 hover:bg-white/20;
 }
 
 /* -------------------- Animation helpers (no @apply here) -------------------- */
