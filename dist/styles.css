@@ -9,20 +9,23 @@
 }
 
 .am-modal-overlay {
-  @apply fixed inset-0 bg-black/45 backdrop-blur-[1px];
+  @apply fixed inset-0 backdrop-blur-[1px];
+  /* Overlay color via CSS var, with sensible fallback */
+  @apply fixed inset-0 backdrop-blur-[1px];
+  background-color: var(--am-modal-overlay-bg, rgba(0, 0, 0, 0.4));
   animation: overlay-fade-in 0.2s ease-out forwards;
 }
 
 /* -------------------- Modal box -------------------- */
 
 .am-modal-box {
-  @apply relative z-10 w-full max-h-[85vh] overflow-hidden rounded-2xl 
-    border border-slate-300
-    bg-white text-slate-900 shadow-2xl flex flex-col;
-}
+  @apply relative z-10 w-full max-h-[85vh] overflow-hidden border shadow-2xl flex flex-col;
 
-.dark .am-modal-box {
-  @apply bg-slate-900 text-slate-50 border-slate-700;
+  /* Core colors (host app can override these) */
+  background-color: var(--am-modal-bg, #ffffff);
+  color: var(--am-modal-fg, #020617); /* slate-950-ish */
+  border-color: var(--am-modal-border, #e2e8f0); /* slate-200-ish */
+  border-radius: var(--am-modal-radius, 1rem);
 }
 
 /* -------------------- Sizes -------------------- */
@@ -48,31 +51,31 @@
 }
 
 /* -------------------- Variants -------------------- */
+/* Variants just change semantic border/accent colors via vars */
 
 .am-modal-variant-default {
-  /* uses default border color from .am-modal-box */
+  /* uses default border color */
 }
 
 .am-modal-variant-danger {
-  @apply border-red-500/60;
+  border-color: var(--am-modal-danger-border, #ef4444); /* red-500-ish */
 }
 
 .am-modal-variant-success {
-  @apply border-emerald-500/60;
+  border-color: var(--am-modal-success-border, #10b981); /* emerald-500-ish */
 }
 
 .am-modal-variant-info {
-  @apply border-sky-500/60;
+  border-color: var(--am-modal-info-border, #0ea5e9); /* sky-500-ish */
 }
 
 /* -------------------- Header + variants -------------------- */
 
 .am-modal-header {
-  @apply border-b px-6 py-4 flex flex-col gap-1 border-slate-200;
-}
+  @apply border-b px-6 py-4 flex flex-col gap-1;
 
-.dark .am-modal-header {
-  @apply border-slate-700;
+  background-color: var(--am-modal-header-bg, transparent);
+  border-color: var(--am-modal-header-border, var(--am-modal-border, #e2e8f0));
 }
 
 .am-modal-header-variant-default {
@@ -80,15 +83,27 @@
 }
 
 .am-modal-header-variant-danger {
-  @apply bg-red-500/5 border-red-500/60;
+  background-color: var(
+    --am-modal-danger-header-bg,
+    color-mix(in srgb, #ef4444 5%, transparent)
+  );
+  border-color: var(--am-modal-danger-border, #ef4444);
 }
 
 .am-modal-header-variant-success {
-  @apply bg-emerald-500/5 border-emerald-500/60;
+  background-color: var(
+    --am-modal-success-header-bg,
+    color-mix(in srgb, #10b981 5%, transparent)
+  );
+  border-color: var(--am-modal-success-border, #10b981);
 }
 
 .am-modal-header-variant-info {
-  @apply bg-sky-500/5 border-sky-500/60;
+  background-color: var(
+    --am-modal-info-header-bg,
+    color-mix(in srgb, #0ea5e9 5%, transparent)
+  );
+  border-color: var(--am-modal-info-border, #0ea5e9);
 }
 
 /* -------------------- Body & footer -------------------- */
@@ -98,24 +113,25 @@
 }
 
 .am-modal-footer {
-  @apply border-t px-6 py-4 flex items-center justify-end gap-2 
-    border-slate-200;
-}
-
-.dark .am-modal-footer {
-  @apply border-slate-700;
+  @apply border-t px-6 py-4 flex items-center justify-end gap-2;
+  border-color: var(--am-modal-footer-border, var(--am-modal-border, #e2e8f0));
 }
 
 /* -------------------- Close button -------------------- */
 
 .am-modal-close-btn {
-  @apply absolute right-4 top-4 inline-flex h-8 w-8 items-center justify-center 
-    rounded-full border border-transparent bg-black/10 text-slate-800 
-    hover:bg-black/20;
+  @apply absolute right-4 top-4 inline-flex h-8 w-8 items-center justify-center
+    rounded-full border;
+
+  border-color: var(--am-modal-close-border, transparent);
+  background-color: var(--am-modal-close-bg, rgba(0, 0, 0, 0.1));
+  color: var(--am-modal-close-fg, #020617);
+  transition: background-color 0.15s ease, color 0.15s ease,
+    border-color 0.15s ease;
 }
 
-.dark .am-modal-close-btn {
-  @apply bg-white/10 text-slate-100 hover:bg-white/20;
+.am-modal-close-btn:hover {
+  background-color: var(--am-modal-close-bg-hover, rgba(0, 0, 0, 0.2));
 }
 
 /* -------------------- Animation helpers (no @apply here) -------------------- */
